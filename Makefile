@@ -31,10 +31,11 @@ build: ## Generate the windows and linux builds for sep
 	echo "Compiling for every OS and Platform"
 	set GOOS=windows
 	set GOARCH=arm64
-	go build -o ${BIN}/${EXE_NAME}.exe *.go
+	set CGO_ENABLED=0
+	CGO_ENABLED=0 go build -o ${BIN}/${EXE_NAME}.exe doubleopenconf.go utils.go
 	set GOOS=linux
-	set GOARCH=arm64
-	go build -o ${BIN}/${EXE_NAME} *.go
+	set GOARCH=amd64
+	CGO_ENABLED=0 go build -o ${BIN}/${EXE_NAME} doubleopenconf.go utils.go
 
 
 test: ## downloads the meta-doubleopen git repo and configures 2 files in test folder workdir/conf/ bblayers.conf and local.conf

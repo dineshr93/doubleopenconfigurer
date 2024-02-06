@@ -14,14 +14,12 @@ import (
 	"strconv"
 	"strings"
 	"sync"
-
-	"github.com/go-git/go-git/v5"
 )
 
 func main() {
 	fmt.Println(strings.Repeat("=", 10), "Start of file", path.Base(os.Args[0]), strings.Repeat("=", 10))
 	var wg sync.WaitGroup
-	wg.Add(3)
+	wg.Add(2)
 
 	repoAddText := "  ${TOPDIR}/../meta-doubleopen \\"
 	inheritText := "INHERIT += \"doubleopen\""
@@ -45,27 +43,27 @@ func main() {
 	}
 	// fmt.Println(folderPath)
 
-	go func(folderPath string) {
-		defer wg.Done()
-		doubleOpenRepo := folderPath + string(os.PathSeparator) + "meta-doubleopen"
-		doubleOpenURL := "git@gitext.elektrobitautomotive.com:oss/meta-doubleopen.git"
-		if _, err := os.Stat(doubleOpenRepo); errors.Is(err, fs.ErrNotExist) {
+	// go func(folderPath string) {
+	// 	defer wg.Done()
+	// 	doubleOpenRepo := folderPath + string(os.PathSeparator) + "meta-doubleopen"
+	// 	doubleOpenURL := "git@gitext.elektrobitautomotive.com:oss/meta-doubleopen.git"
+	// 	if _, err := os.Stat(doubleOpenRepo); errors.Is(err, fs.ErrNotExist) {
 
-			fmt.Println(doubleOpenRepo, " git Repo doesnt exist in", folderPath, ". Cloning from git@gitext.elektrobitautomotive.com:oss/meta-doubleopen.git")
-			_, err := git.PlainClone(doubleOpenRepo, false, &git.CloneOptions{
-				URL:      doubleOpenURL,
-				Progress: os.Stdout,
-			})
-			if err != nil {
-				fmt.Println(" Error while cloning the meta-doubleopen repo")
-				fmt.Println(err)
-				os.Exit(1)
-			}
+	// 		fmt.Println(doubleOpenRepo, " git Repo doesnt exist in", folderPath, ". Cloning from git@gitext.elektrobitautomotive.com:oss/meta-doubleopen.git")
+	// 		_, err := git.PlainClone(doubleOpenRepo, false, &git.CloneOptions{
+	// 			URL:      doubleOpenURL,
+	// 			Progress: os.Stdout,
+	// 		})
+	// 		if err != nil {
+	// 			fmt.Println(" Error while cloning the meta-doubleopen repo")
+	// 			fmt.Println(err)
+	// 			os.Exit(1)
+	// 		}
 
-		} else {
-			fmt.Println("Repo already exists so Skipping clone!")
-		}
-	}(folderPath)
+	// 	} else {
+	// 		fmt.Println("Repo already exists so Skipping clone!")
+	// 	}
+	// }(folderPath)
 
 	go func(folderPath string) {
 		defer wg.Done()
